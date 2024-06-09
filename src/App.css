@@ -2,13 +2,29 @@
   text-align: center;
 }
 
-h1 {
+.header {
   font-style: italic;
-  margin-top: 10vh;
+  margin-top: 5vh;
   margin-bottom: 10vh;
+}
+
+h1 {
+  margin-bottom: 2rem;
 }
 
 svg {
   margin: 2vw;
   max-width: 800px;
+}
+
+a:link {
+  color: #e93590;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #bd3eff;
+  background-color: transparent;
+  text-decoration: none;
 }

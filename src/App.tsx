@@ -1,8 +1,8 @@
 import React from "react";
 import "./App.css";
 
-const NUM_PAGES = 1;
-const PAGE_SIZE = 100;
+const NUM_PAGES = 10;
+const PAGE_SIZE = 10;
 
 const KEYWORDS = [
   "ai",
@@ -14,13 +14,13 @@ const KEYWORDS = [
   "chatgpt",
 ];
 
-const HYPE_LEVELS: [[number, number], string][] = [
-  [[0, 0.11], "LOW-MODERATE"],
-  [[0.12, 0.24], "HIGH"],
-  [[0.25, 0.49], "VERY HIGH"],
-  [[0.5, 0.74], "SEVERE"],
-  [[0.75, 0.99], "EXTREME"],
-  [[0.99, 1.01], "CATASTROPHIC"],
+const HYPE_LEVELS: [number, string][] = [
+  [0.99, "CATASTROPHIC"],
+  [0.74, "EXTREME"],
+  [0.49, "SEVERE"],
+  [0.24, "VERY HIGH"],
+  [0.11, "HIGH"],
+  [0, "LOW-MODERATE"],
 ];
 
 async function fetchPosts(page: number) {
@@ -46,13 +46,17 @@ function getColor(value: number): string {
 }
 
 function resolveHypeLevel(hype: number): string {
-  const hypeLevel = HYPE_LEVELS.find(
-    ([[lowerBound, upperBound]]) => hype >= lowerBound && hype <= upperBound
-  );
+  const hypeLevel = HYPE_LEVELS.find(([lowerBound]) => hype >= lowerBound);
   return !!hypeLevel ? hypeLevel[1] : "-";
 }
 
-function Gauge({ fill }: { fill: number }): React.JSX.Element {
+function Gauge({
+  fill,
+  percent,
+}: {
+  fill: number;
+  percent: number;
+}): React.JSX.Element {
   // Courtesy of https://www.fullstack.com/labs/resources/blog/creating-an-svg-gauge-component-from-scratch
   const radius = document.body.clientWidth / 3;
   const strokeWidth = radius * 0.2;
@@ -104,6 +108,16 @@ function Gauge({ fill }: { fill: number }): React.JSX.Element {
       >
         {resolveHypeLevel(fill)}
       </text>
+      <text
+        x="50%"
+        y="40%"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        fontSize={radius / 8}
+        fill="white"
+      >
+        {percent.toFixed(0)}%
+      </text>
     </svg>
   );
 }
@@ -136,10 +150,25 @@ function App() {
 
   return (
     <>
-      <div>
+      <div className="header">
         <h1>AI HYPE</h1>
+        <p>
+          as measured by the percentage of the latest 100 "Show HN" posts on{" "}
+          <a
+            href="https://news.ycombinator.com/shownew"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Hacker News
+          </a>{" "}
+          which contain AI related keywords
+        </p>
+        <p>
+          the hype dial severity greatly increases as the percentage of posts
+          approaches 100%
+        </p>
       </div>
-      <Gauge fill={hype} />
+      <Gauge fill={hype} percent={percent * 100} />
     </>
   );
 }
