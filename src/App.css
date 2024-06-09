@@ -1,0 +1,14 @@
+#root {
+  text-align: center;
+}
+
+h1 {
+  font-style: italic;
+  margin-top: 10vh;
+  margin-bottom: 10vh;
+}
+
+svg {
+  margin: 2vw;
+  max-width: 800px;
+}
