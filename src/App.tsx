@@ -33,7 +33,10 @@ async function fetchPosts(page: number) {
     KEYWORDS.some((keyword) => {
       const titleLower = title.toLowerCase();
       return (
-        titleLower.includes(` ${keyword}`) || titleLower.includes(`${keyword} `)
+        titleLower.includes(` ${keyword}`) ||
+        titleLower.includes(`${keyword} `) ||
+        titleLower.includes(`${keyword}-`) ||
+        titleLower.includes(`-${keyword}`)
       );
     })
   );
